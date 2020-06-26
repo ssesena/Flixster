@@ -1,5 +1,10 @@
 package com.codepath.flixster.models;
 
+import android.util.Log;
+
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +15,7 @@ import java.util.List;
 
 @Parcel
 public class Movie {
+    Integer id;
     String backdropPath;
     String posterPath;
     String title;
@@ -24,6 +30,7 @@ public class Movie {
         title = jsonObject.getString("title");
         overview = jsonObject.getString("overview");
         voteAverage = jsonObject.getDouble("vote_average");
+        id = jsonObject.getInt("id");
     }
 
     public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
@@ -36,6 +43,10 @@ public class Movie {
 
     public String getPosterPath() {
         return String.format("https://image.tmdb.org/t/p/w342/%s",posterPath);
+    }
+
+    public String getBiggerBackdropPath(){
+        return String.format("https://image.tmdb.org/t/p/w1280/%s", backdropPath);
     }
 
     public String getBackdropPath(){
@@ -52,5 +63,9 @@ public class Movie {
 
     public Double getVoteAverage() {
         return voteAverage;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
