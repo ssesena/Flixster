@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.flixster.MovieDetailsActivity;
 import com.codepath.flixster.R;
+import com.codepath.flixster.databinding.ItemMovieBinding;
 import com.codepath.flixster.models.Movie;
 
 import org.parceler.Parcels;
@@ -61,30 +60,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView tvTitle;
-        TextView tvOverview;
-        ImageView ivPoster;
+        ItemMovieBinding binding = ItemMovieBinding.bind(itemView);
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverview = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             int radius = 50;
             int margin = 20;
-            tvTitle.setText(movie.getTitle());
-            tvOverview.setText(movie.getOverview());
+            binding.tvTitle.setText(movie.getTitle());
+            binding.tvOverview.setText(movie.getOverview());
             String imageUrl;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imageUrl = movie.getBackdropPath();
             } else {
                 imageUrl = movie.getPosterPath();
             }
-            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(ivPoster);
+            Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(binding.ivPoster);
         }
 
         @Override

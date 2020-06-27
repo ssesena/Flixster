@@ -1,10 +1,5 @@
 package com.codepath.flixster.models;
 
-import android.util.Log;
-
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

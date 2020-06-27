@@ -1,20 +1,17 @@
 package com.codepath.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.codepath.flixster.databinding.ActivityMovieDetailsBinding;
 import com.codepath.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -22,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import okhttp3.Headers;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -30,11 +26,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public static final String TAG = "MovieDetailsActivity";
     Context context = this;
     JSONObject video;
-    ImageView ivBackdrop;
     Movie movie;
-    TextView tvTitle;
-    TextView tvOverview;
-    RatingBar rbVoteAverage;
     String videoId;
     public static final String URL_PART_ONE = "https://api.themoviedb.org/3/movie/";
     public static final String URL_PART_TWO =  "/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US";
@@ -45,19 +37,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
         int radius = 50;
         int margin = 0;
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        ActivityMovieDetailsBinding binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvOverview = (TextView) findViewById(R.id.tvOverview);
-        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
-        ivBackdrop = (ImageView) findViewById(R.id.ivBackdrop);
+
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s", movie.getTitle()));
 
-        tvTitle.setText(movie.getTitle());
-        tvOverview.setText(movie.getOverview());
+        binding.tvTitle.setText(movie.getTitle());
+        binding.tvOverview.setText(movie.getOverview());
         float voteAverage = movie.getVoteAverage().floatValue();
-        rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f: voteAverage);
-        Glide.with(this).load(movie.getBiggerBackdropPath()).into(ivBackdrop);
+        binding.rbVoteAverage.setRating(voteAverage = voteAverage > 0 ? voteAverage / 2.0f: voteAverage);
+        Glide.with(this).load(movie.getBiggerBackdropPath()).into(binding.ivBackdrop);
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -85,7 +76,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             }
 
         });
-        ivBackdrop.setOnClickListener(new View.OnClickListener() {
+        binding.ivBackdrop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (video != null) {
