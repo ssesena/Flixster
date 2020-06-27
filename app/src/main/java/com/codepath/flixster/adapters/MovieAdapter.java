@@ -19,6 +19,7 @@ import com.codepath.flixster.models.Movie;
 
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
@@ -63,6 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         ItemMovieBinding binding = ItemMovieBinding.bind(itemView);
 
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -76,8 +78,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
             String imageUrl;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imageUrl = movie.getBackdropPath();
+                Glide.with(context)
+                        .load(R.drawable.flicks_backdrop_placeholder)
+                        .into(binding.ivPoster);
             } else {
                 imageUrl = movie.getPosterPath();
+                Glide.with(context)
+                        .load(R.drawable.flicks_movie_placeholder)
+                        .into(binding.ivPoster);
+                Log.v("MOVIEADAPTER", "Image loaded");
             }
             Glide.with(context).load(imageUrl).transform(new RoundedCornersTransformation(radius, margin)).into(binding.ivPoster);
         }
